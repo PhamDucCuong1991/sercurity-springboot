@@ -34,6 +34,7 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    ModelMapper modelMapper = new ModelMapper();
 
     public User createUser(UserCreationRequest request){
 
@@ -62,7 +63,8 @@ public class UserService {
         User user = userRepository.findByUsername(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        return userMapper.toUserResponse(user);
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+        return userResponse;
     }
 
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {

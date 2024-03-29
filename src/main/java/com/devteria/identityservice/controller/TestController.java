@@ -4,6 +4,7 @@ import com.devteria.identityservice.dto.response.UserResponse;
 import com.devteria.identityservice.entity.User;
 import com.devteria.identityservice.mapper.UserMapper;
 import com.devteria.identityservice.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -26,13 +27,16 @@ public class TestController {
     @Autowired
     private UserMapper userMapper;
 
+
+    ModelMapper modelMapper = new ModelMapper();
+
     @GetMapping()
     public ResponseEntity getUserDetail(@RequestParam Long userId) {
 
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
-            UserResponse userResponse = userMapper.toUserResponse(userOptional.get());
+            UserResponse userResponse = modelMapper.map(userOptional.get(), UserResponse.class);
             return ResponseEntity.ok(userResponse);
         } else {
             return ResponseEntity.notFound().build();

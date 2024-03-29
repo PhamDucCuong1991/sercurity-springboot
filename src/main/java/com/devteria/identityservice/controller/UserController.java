@@ -77,7 +77,7 @@ public class UserController {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
-            UserResponse userResponse = userMapper.toUserResponse(userOptional.get());
+            UserResponse userResponse = modelMapper.map(userOptional.get(), UserResponse.class);
             return ResponseEntity.ok(userResponse);
         } else {
             return ResponseEntity.notFound().build();

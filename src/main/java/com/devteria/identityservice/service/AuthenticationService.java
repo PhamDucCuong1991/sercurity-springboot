@@ -37,11 +37,6 @@ import java.util.StringJoiner;
 public class AuthenticationService {
     UserRepository userRepository;
 
-    // Cách tạo SecretKey;
-//    SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-//    String secretString = Encoders.BASE64.encode(key.getEncoded());
-//    logger.info("Secret key: " + secretString);
-
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
@@ -86,10 +81,10 @@ public class AuthenticationService {
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
-                .issuer("devteria.com")
+                .issuer("thuydungmedia.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(365, ChronoUnit.DAYS).toEpochMilli()
                 ))
                 .claim("scope", buildScope(user))
                 .build();
